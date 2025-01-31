@@ -1,10 +1,11 @@
 #
-# this makefile is configured for CentOS 6.5 AMD64
+# this makefile is configured for Rocky Linux 9 AMD64
 # these are the packages you will need:
-# sudo yum groupinstall "Development Tools"
-# sudo yum install python-libs python-devel python-debuginfo \ 
-# db4-devel mysql-libs mysql-devel gdb mercurial
-#
+# dnf config-manager --set-enabled crb  
+# sudo dnf groupinstall "Development Tools"
+# sudo dnf install python3-libs python3-devel python3.12-libs python3.12-devel \
+# db4-devel gdb git mysql-common mysql-libs mysql-devel
+# (or revise mysql for mariadb)
 
 debug := yes
 opt := no
