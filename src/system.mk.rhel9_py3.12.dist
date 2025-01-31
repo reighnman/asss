@@ -1,7 +1,7 @@
 #
 # this makefile is configured for Rocky Linux 9 AMD64
 # these are the packages you will need:
-# dnf config-manager --set-enabled crb  
+# sduo dnf config-manager --set-enabled crb  
 # sudo dnf groupinstall "Development Tools"
 # sudo dnf install python3-libs python3-devel python3.12-libs python3.12-devel \
 # db4-devel gdb git mysql-common mysql-libs mysql-devel
