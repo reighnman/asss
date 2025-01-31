@@ -65,11 +65,10 @@ def makemutable(mat):
 
 
 def processfile(name):
-	from string import strip
-	data = map(strip, open(name).readlines())
+	#from string import strip
+	data = list(map(lambda x: x.strip(), open(name).readlines()))
 	l = len(data)
-	perlet = l / LETTERS
-
+	perlet = l // LETTERS
 	letters = []
 	widths = []
 
@@ -139,7 +138,7 @@ def emit_letters(o, letters, widths):
 
 def main():
 	if len(sys.argv) < 3:
-		print "\nUsage: %s banner.font letters.inc\n"
+		print("\nUsage: %s banner.font letters.inc\n")
 		sys.exit()
 	else:
 		o = open(sys.argv[2], 'w')

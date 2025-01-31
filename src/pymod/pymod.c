@@ -12,7 +12,7 @@
 #undef _XOPEN_SOURCE
 #undef _DEBUG
 #include "Python.h"
-#include "structmember.h"
+/*#include "structmember.h"*/
 
 /* add define for Py_ssize_t on versions before Python2.5 */
 #if PY_VERSION_HEX < 0x02050000
@@ -1351,9 +1351,9 @@ local void py_newplayer(Player *p, int isnew)
 	}
 	else
 	{
-		if (d->obj->ob_refcnt != 1)
+		if (Py_REFCNT(d->obj) != 1)
 			lm->Log(L_ERROR, "<pymod> there are %lu remaining references to a player object!",
-					(unsigned long)d->obj->ob_refcnt - 1);
+					(unsigned long)Py_REFCNT(d->obj) - 1);
 
 		/* this stuff would usually be done in dealloc, but I want to
 		 * make sure player objects for players who are gone are
@@ -1396,9 +1396,9 @@ local void py_aaction(Arena *a, int action)
 
 	if (action == AA_POSTDESTROY && d->obj)
 	{
-		if (d->obj->ob_refcnt != 1)
+		if (Py_REFCNT(d->obj) != 1)
 			lm->Log(L_ERROR, "<pymod> there are %lu remaining references to an arena object!",
-					(unsigned long)d->obj->ob_refcnt - 1);
+					(unsigned long)Py_REFCNT(d->obj) - 1);
 
 		/* see notes for py_newplayer as to why this is done here. */
 		d->obj->a = NULL;

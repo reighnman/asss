@@ -62,7 +62,7 @@ def tokenize_signature(s):
 	t = ''
 	dash = 0
 	for c in s:
-		if c in string.letters or c in string.digits or c == '_':
+		if c in string.ascii_letters or c in string.digits or c == '_':
 			t += c
 		else:
 			if t:
@@ -532,7 +532,7 @@ def create_c_to_py_func(name, func):
 	elif av_player:
 		arenaval = av_player
 		if name:
-			print "warning: %s: guessing arena from player argument" % name
+			print("warning: %s: guessing arena from player argument" % name)
 	else:
 		arenaval = 'ALLARENAS'
 	del av_arena
@@ -589,7 +589,7 @@ def create_py_to_c_func(func):
 		elif arg.tp == 'formatted':
 			# these are a little weird
 			if idx != len(args):
-				raise Exception, "formatted arg isn't last!"
+				raise Exception("formatted arg isn't last!")
 			typ = get_type('string')
 			argname += '_infmt'
 			informat.append(typ.format_char())
@@ -940,7 +940,7 @@ pyint_init_code = []
 def translate_pyint(iid, ifstruct, dirs):
 
 	_, allowed = dirs.pop(0)
-	allowed = map(string.strip, allowed.split(','))
+	allowed = list(map(lambda x: x.strip(), allowed.split(',')))
 	if 'use' in allowed:
 
 		objstructname = 'pyint_obj_%s' % iid
@@ -955,7 +955,7 @@ def translate_pyint(iid, ifstruct, dirs):
 				tokens = tokenize_signature(thing)
 				func = parse_func(tokens)
 			except:
-				print "couldn't parse '%s'" % thing
+				print("couldn't parse '%s'" % thing)
 				continue
 
 			dict = create_py_to_c_func(func)
@@ -1083,7 +1083,7 @@ local PyTypeObject %(typestructname)s = {
 				tokens = tokenize_signature(thing)
 				func = parse_func(tokens)
 			except:
-				print "bad declaration '%s'" % thing
+				print("bad declaration '%s'" % thing)
 				continue
 			funcname = 'pyint_func_%s_%s' % (iid, name)
 			funcdict = create_c_to_py_func('%s::%s' % (iid, name), func)
@@ -1209,7 +1209,7 @@ pyadv_init_code = []
 def translate_pyadv(aid, ifstruct, dirs):
 
 	_, allowed = dirs.pop(0)
-	allowed = map(string.strip, allowed.split(','))
+	allowed = list(map(lambda x: x.strip(), allowed.split(',')))
 	if 'use' in allowed:
 
 		objstructname = 'pyadv_obj_%s' % aid
@@ -1224,7 +1224,7 @@ def translate_pyadv(aid, ifstruct, dirs):
 				tokens = tokenize_signature(thing)
 				func = parse_func(tokens)
 			except:
-				print "couldn't parse '%s'" % thing
+				print("couldn't parse '%s'" % thing)
 				continue
 
 			dict = create_py_to_c_func(func)
@@ -1352,7 +1352,7 @@ local PyTypeObject %(typestructname)s = {
 				tokens = tokenize_signature(thing)
 				func = parse_func(tokens)
 			except:
-				print "bad declaration '%s'" % thing
+				print("bad declaration '%s'" % thing)
 				continue
 			funcname = 'pyadv_func_%s_%s' % (aid, name)
 			funcdict = create_c_to_py_func('%s::%s' % (aid, name), func)
@@ -1581,7 +1581,7 @@ pytype_made_getsetters = {}
 pytype_objects = []
 
 def generate_getset_code(tp):
-	if pytype_made_getsetters.has_key(tp):
+	if tp in pytype_made_getsetters:
 		return []
 	pytype_made_getsetters[tp] = 1
 
@@ -1787,7 +1787,7 @@ def start_struct_type(ctype, name):
 
 
 def handle_pytype(line):
-	things = map(string.strip, line.split(','))
+	things = list(map(lambda x: x.strip(), line.split(',')))
 	if things[0] == 'opaque':
 		make_opaque_type(things[1], things[2])
 	elif things[0] == 'struct':
@@ -1850,7 +1850,7 @@ typedef char charbuf[%d];
 lines = []
 for pat in sys.argv[2:]:
 	for f in glob.glob(pat):
-		lines.extend(map(lambda l: l.rstrip("\r\n"), open(f).readlines()))
+		lines.extend([l.rstrip("\r\n") for l in open(f).readlines()])
 
 # default constants
 const_string('ASSSVERSION')
@@ -1945,7 +1945,7 @@ for l in lines:
 	for myre, func in extra_patterns:
 		m = myre.match(l)
 		if m:
-			apply(func, m.groups())
+			func(*m.groups())
 
 
 finish_pycb()

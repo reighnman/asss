@@ -8,7 +8,7 @@ re_inc = re.compile(r'\s*#include\s+"([^"]+)"\s*')
 
 
 def warn(fn, alreadydone={}):
-	if not alreadydone.has_key(fn):
+	if not alreadydone.__contains__(fn):
 		alreadydone[fn] = 1
 		# print >>sys.stderr, 'makedeps: warning: "%s" not found' % fn
 
@@ -29,7 +29,7 @@ def format_deps(out, fn, paths, prefix):
 		dir, base = path.split(fn)
 
 		try:
-			lines = file(fn).readlines()
+			lines = open(fn).readlines()
 		except EnvironmentError:
 			print >>sys.stderr, "makedeps: can't open: %s" % fn
 			sys.exit(1)
@@ -77,7 +77,7 @@ def main():
 		i += 1
 		if arg.startswith('-o'):
 			try:
-				outfile = file(args[i], 'w')
+				outfile = open(args[i], 'w')
 			except EnvironmentError:
 				print >>sys.stderr, "makedeps: can't write to: %s" % args[i]
 				sys.exit(1)

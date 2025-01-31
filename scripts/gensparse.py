@@ -5,12 +5,13 @@
 # generates C code for efficient sparse array manipulation
 
 import sys
+from functools import reduce
 
 # PARAMETERS (change these) --------------------------------------------
 
 if len(sys.argv) > 2:
 	# try to read parameters from a parameter file
-	execfile(sys.argv[2])
+	exec(open(sys.argv[2]).read())
 else:
 	# the type of the data to be represented
 	sourcetype = 'unsigned char'
